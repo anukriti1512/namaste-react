@@ -1,0 +1,28 @@
+{
+  "name": "react",
+  "version": "1.0.0",
+  "description": "Learn React",
+  "scripts": {
+    "test": "jest",
+    "build":"parcel build index.html",
+    "start":"parcel index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anukriti1512/namaste-react.git"
+  },
+  "author": "anukriti",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anukriti1512/namaste-react/issues"
+  },
+  "homepage": "https://github.com/anukriti1512/namaste-react#readme",
+  "devDependencies": {
+    "parcel": "^2.12.0",
+    "process": "^0.11.10"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
