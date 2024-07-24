@@ -1,6 +1,7 @@
 import RestaurantCard from "./RestaurantCard";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
 
 const Body = () => {
   const [restaurantList, setRestaurantList] = useState([]);
@@ -32,7 +33,7 @@ const Body = () => {
   //   }
 
   // return actual cards UI when data is fetched from the API
-  return restaurantList.length == 0 ? (
+  return restaurantList?.length == 0 ? (
     <Shimmer />
   ) : (
     <div className="body">
@@ -61,25 +62,31 @@ const Body = () => {
         <button
           className="filter-btn"
           onClick={() => {
-            const filteredRes = restaurantList.filter(
-              (res) => res.info.avgRating > 4
-            );
-            setRestaurantList(filteredRes);
+            const filteredRes = restaurantList.filter((res) => {
+              // console.log("res", res);
+              return res.info.avgRating > 4;
+            });
+            setFilteredRestaurantList(filteredRes);
           }}
         >
           Top Rated Restaurants
         </button>
       </div>
       <div className="restaurant-container">
-        {filteredRestaurantList.map((restaurant) => {
+        {filteredRestaurantList?.map((restaurant) => {
           return (
-            <RestaurantCard
+            <Link
+              className="res-card-link"
               key={restaurant.info.id}
-              resName={restaurant.info.name}
-              imgUrl={restaurant.info.cloudinaryImageId}
-              starRating={restaurant.info.avgRating}
-              cuisine={restaurant.info.cuisines.join(", ")}
-            />
+              to={"/restaurants/" + restaurant.info.id}
+            >
+              <RestaurantCard
+                resName={restaurant.info.name}
+                imgUrl={restaurant.info.cloudinaryImageId}
+                starRating={restaurant.info.avgRating}
+                cuisine={restaurant.info.cuisines.join(", ")}
+              />
+            </Link>
           );
         })}
       </div>
