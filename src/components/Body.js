@@ -2,6 +2,7 @@ import RestaurantCard from "./RestaurantCard";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Body = () => {
   const [restaurantList, setRestaurantList] = useState([]);
@@ -27,6 +28,16 @@ const Body = () => {
     );
   };
 
+  const onlineStatus = useOnlineStatus();
+
+  if (onlineStatus == false) {
+    return (
+      <h1>
+        Looks like you are offline ! Please check your internet connection!!!
+      </h1>
+    );
+  }
+
   // shimmer UI rendering -> if now data is present
   //   if (restaurantList.length == 0) {
   //     return <Shimmer />;
@@ -37,15 +48,16 @@ const Body = () => {
     <Shimmer />
   ) : (
     <div className="body">
-      <div className="filter">
+      <div className="flex gap-2">
         <div className="search">
           <input
             type="text"
-            className="search-box"
+            className="border border-solid border-blue-500 p-1 m-2"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           ></input>
           <button
+            className="mx-4 my-2 px-4 py-2 rounded-lg bg-blue-400 text-white"
             onClick={(e) => {
               // filtering based on search
               const filteredRes = restaurantList.filter((r) => {
@@ -60,7 +72,7 @@ const Body = () => {
           </button>
         </div>
         <button
-          className="filter-btn"
+          className="mx-4 my-2 px-4 py-2 rounded-lg bg-green-300 text-gray-600"
           onClick={() => {
             const filteredRes = restaurantList.filter((res) => {
               // console.log("res", res);
@@ -72,7 +84,7 @@ const Body = () => {
           Top Rated Restaurants
         </button>
       </div>
-      <div className="restaurant-container">
+      <div className="flex flex-wrap">
         {filteredRestaurantList?.map((restaurant) => {
           return (
             <Link
