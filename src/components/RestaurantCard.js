@@ -1,21 +1,50 @@
 import { IMG_CDN_URL } from "../utils/constants";
 const RestaurantCard = (props) => {
+  console.log("props", props);
   return (
-    <div className="flex justify-center items-center flex-col m-2 rounded-lg p-4  bg-slate-200 w-80 h-min">
-      <div className="flex mb-2 rounded-lg max-w-fit min-h-72">
+    <div className="card  hover:scale-90 flex  items-center flex-col m-2 rounded-lg w-80">
+      <div className="w-[280px] h-[200px] overflow-hidden rounded-xl">
         <img
-          className="mb-2 rounded-lg w-[300px] h-[300px] "
-          src={IMG_CDN_URL + props.imgUrl}
+          className="object-cover w-full h-full  "
+          src={IMG_CDN_URL + props.resData.cloudinaryImageId}
         />
       </div>
-      <div className="flex flex-col items-center min-h-40">
-        <h3 className="font-extrabold">{props.resName}</h3>
-        <h4 className="text-sm text-gray-700">{props.cuisine}</h4>
-        <h4 className="font-semibold m-2">{props.starRating} ⭐</h4>
-        <h4 className="font-semibold text-gray-800">38 mins</h4>
+      <div
+        className="flex flex-col p-4"
+        style={{ width: "-webkit-fill-available" }}
+      >
+        <h3 className="px-2 font-gilroy font-bold text-[18px] whitespace-nowrap overflow-hidden text-ellipsis">
+          {props.resData.name}
+        </h3>
+        <h4 className="font-semibold m-1">
+          {" "}
+          ⭐ {props.resData.avgRating} ⋄ {props.resData.sla.slaString}{" "}
+        </h4>
+        <h4 className=" px-2 font-gilroy text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis ">
+          {props.resData.cuisines.join(", ")}
+        </h4>
+        <h4 className="px-2 font-gilroy text-gray-600">
+          {props.resData.areaName}
+        </h4>
       </div>
     </div>
   );
+};
+
+// Higher order component
+export const promotedLabelRestaurantCard = (RestaurantCard) => {
+  // return a enhanced component
+  // component
+  return (props) => {
+    return (
+      <div className="hover:scale-90">
+        <label className="absolute bg-black text-white p-2 m-1 ml-4 rounded-lg z-50">
+          Promoted
+        </label>
+        <RestaurantCard {...props} />
+      </div>
+    );
+  }; // component ends
 };
 
 export default RestaurantCard;

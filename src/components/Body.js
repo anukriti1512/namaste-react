@@ -1,4 +1,4 @@
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, { promotedLabelRestaurantCard } from "./RestaurantCard";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
@@ -6,6 +6,7 @@ import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Body = () => {
   const [restaurantList, setRestaurantList] = useState([]);
+  const PromotedRestaurantCard = promotedLabelRestaurantCard(RestaurantCard);
   useEffect(() => {
     fetchData();
   }, []);
@@ -52,7 +53,7 @@ const Body = () => {
         <div className="search">
           <input
             type="text"
-            className="border border-solid border-blue-500 p-1 m-2"
+            className="border border-solid border-blue-500 p-1 m-2 focus:outline-none focus:border-blue-500"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           ></input>
@@ -84,20 +85,20 @@ const Body = () => {
           Top Rated Restaurants
         </button>
       </div>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap gap-4 justify-center">
         {filteredRestaurantList?.map((restaurant) => {
+          console.log("rest", restaurant);
           return (
             <Link
-              className="res-card-link"
+              className="res-card-link "
               key={restaurant.info.id}
               to={"/restaurants/" + restaurant.info.id}
             >
-              <RestaurantCard
-                resName={restaurant.info.name}
-                imgUrl={restaurant.info.cloudinaryImageId}
-                starRating={restaurant.info.avgRating}
-                cuisine={restaurant.info.cuisines.join(", ")}
-              />
+              {restaurant.info.avgRating > 4.3 ? (
+                <PromotedRestaurantCard resData={restaurant.info} />
+              ) : (
+                <RestaurantCard resData={restaurant.info} />
+              )}
             </Link>
           );
         })}
@@ -107,3 +108,14 @@ const Body = () => {
 };
 
 export default Body;
+
+{
+  /* <RestaurantCard
+resName={restaurant.info.name}
+imgUrl={restaurant.info.cloudinaryImageId}
+starRating={restaurant.info.avgRating}
+cuisine={restaurant.info.cuisines.join(", ")}
+areaName={restaurant.info.areaName}
+deliveryTime={restaurant.info.sla.slaString}
+/> */
+}
